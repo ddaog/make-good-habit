@@ -116,8 +116,13 @@ export default function Dashboard() {
                             <span>성공 횟수</span>
                             <span>{successCount} / 3</span>
                         </div>
-                        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '10px', height: '8px', overflow: 'hidden' }}>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '10px', height: '8px', overflow: 'hidden', marginBottom: '0.8rem' }}>
                             <div style={{ width: `${(successCount / 3) * 100}%`, height: '100%', background: '#2ecc71', transition: 'width 0.3s ease' }} />
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', opacity: 0.7 }}>
+                            <span>전체 시도: {(experimentStats?.successCount || 0) + (experimentStats?.failureCount || 0)}회</span>
+                            <span style={{ color: '#ff6b6b' }}>실패: {experimentStats?.failureCount || 0}회</span>
                         </div>
                     </div>
 
