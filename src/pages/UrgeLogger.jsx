@@ -23,7 +23,7 @@ export default function UrgeLogger() {
             actionTaken: 'logged', // default
         };
         addLog(newLog);
-        navigate('/dashboard'); // Go back to dashboard
+        navigate('/experiment/proposal'); // Navigate to new proposal after observation
     };
 
     return (
@@ -36,12 +36,12 @@ export default function UrgeLogger() {
                     >
                         <ArrowLeft size={24} />
                     </button>
-                    <h1 style={{ fontSize: '1.5rem', margin: 0 }}>욕구 관찰하기</h1>
+                    <h1 style={{ fontSize: '1.5rem', margin: 0 }}>실패의 순간 관찰하기</h1>
                 </div>
                 <p style={{ opacity: 0.8, fontSize: '0.9rem', lineHeight: '1.5', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px' }}>
-                    <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>💡 왜 기록하나요?</span><br />
-                    습관은 무의식적인 반복입니다. 욕구가 일어나는 순간을 기록하는 것만으로도,
-                    뇌는 자동 반응을 멈추고 **선택할 수 있는 상태**가 됩니다.
+                    <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>💡 왜 관찰하나요?</span><br />
+                    실험이 효과가 없었다면, 그 순간의 상황과 감정을 기록해보세요.
+                    패턴을 발견하면 더 나은 대체 행동을 찾을 수 있습니다.
                 </p>
             </header>
 

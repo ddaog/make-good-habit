@@ -12,8 +12,7 @@ export default function Dashboard() {
     const streak = logs.filter(l => l.actionTaken === 'good').length;
     const successCount = experimentStats?.successCount || 0;
 
-    // HEURISTIC: After 3 logs, suggest an experiment if none is active
-    const showExperimentPrompt = !activeExperiment && logCount >= 3;
+
 
     const handleExperimentComplete = (success) => {
         if (success) {
@@ -30,21 +29,8 @@ export default function Dashboard() {
             }
         } else {
             incrementFailure();
-            const currentFailures = (experimentStats?.failureCount || 0) + 1;
-            const currentSuccesses = experimentStats?.successCount || 0;
-            const totalAttempts = currentFailures + currentSuccesses;
-
-            // User Requirement: "5번 중 3번 이상 효과가 없을 때" (3+ failures out of 5 attempts)
-            // We check if total attempts reached 5, and failures are >= 3.
-            if (totalAttempts >= 5 && currentFailures >= 3) {
-                if (window.confirm("현재 방법은 효과가 부족한 것 같습니다. (5번 중 3번 실패)\n다른 행동을 시도해보시겠습니까?")) {
-                    // Reset stats for the next experiment? Or keep history?
-                    // For now, let's just navigate to proposal to pick a new one.
-                    navigate('/experiment/proposal');
-                }
-            } else {
-                alert("기록되었습니다. 괜찮아요, 다음엔 더 잘 맞을 수도 있어요!");
-            }
+            // New UX: failures trigger observation
+            navigate('/log-urge');
         }
     };
 
@@ -147,45 +133,9 @@ export default function Dashboard() {
                 </motion.div>
             )}
 
-            {/* Suggest Experiment Prompt */}
-            {showExperimentPrompt && (
-                <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="glass-panel"
-                    style={{ padding: '1.5rem', marginBottom: '2rem', textAlign: 'center', border: '1px solid var(--color-accent)' }}
-                >
-                    <h3 className="text-gradient" style={{ margin: '0 0 1rem 0' }}>데이터 분석 완료</h3>
-                    <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem' }}>대체 행동을 제안할 충분한 데이터가 모였습니다.</p>
-                    <button className="btn-primary" onClick={() => navigate('/experiment/proposal')} style={{ width: '100%' }}>
-                        <FlaskConical size={18} style={{ marginRight: '8px' }} /> 제안 보기
-                    </button>
-                </motion.div>
-            )}
 
-            {!activeExperiment && logCount < 3 && (
-                <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="glass-panel"
-                    style={{ padding: '1.5rem', marginBottom: '2rem', textAlign: 'center', opacity: 0.8 }}
-                >
-                    <div style={{ marginBottom: '1rem' }}>
-                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: 'var(--color-text-secondary)' }}>패턴 분석 중...</h3>
-                        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.8, lineHeight: '1.4' }}>
-                            가장 취약한 시간과 감정을 알아야 이길 수 있습니다.<br />
-                            <span style={{ color: 'var(--color-accent)' }}>3번만 솔직하게 기록해보세요.</span>
-                        </p>
-                    </div>
 
-                    <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '10px', height: '8px', overflow: 'hidden', marginBottom: '0.5rem' }}>
-                        <div style={{ width: `${(logCount / 3) * 100}%`, height: '100%', background: 'var(--color-accent)', transition: 'width 0.5s ease' }} />
-                    </div>
-                    <div style={{ fontSize: '0.8rem', textAlign: 'right', color: 'var(--color-accent)' }}>
-                        {logCount} / 3 분석까지
-                    </div>
-                </motion.div>
-            )}
+
 
             {/* Action Area */}
             <h3 style={{ marginBottom: '1rem' }}>Actions</h3>

@@ -53,7 +53,7 @@ export default function Suggestion() {
 
     const handleAccept = () => {
         setHabit(suggestedHabit);
-        navigate('/dashboard');
+        navigate('/experiment/proposal');
     };
 
     if (loading) {
@@ -88,7 +88,7 @@ export default function Suggestion() {
             </div>
 
             <button className="btn-primary" onClick={handleAccept} style={{ width: '100%' }}>
-                도전 수락하기
+                첫 실험 선택하러 가기
             </button>
         </motion.div>
     );
