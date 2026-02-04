@@ -8,6 +8,14 @@ export default function Suggestion() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
+    // Mock AI Logic to "Analyze" their input
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 2000); // Fake "thinking" time
+        return () => clearTimeout(timer);
+    }, []);
+
     const suggestions = {
         'phone': {
             name: "스마트폰 거리두기",
