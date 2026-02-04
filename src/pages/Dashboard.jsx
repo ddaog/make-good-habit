@@ -55,10 +55,14 @@ export default function Dashboard() {
                 style={{ padding: '2rem', marginBottom: '2rem', background: 'linear-gradient(135deg, rgba(20,20,25,0.8) 0%, rgba(30,30,40,0.4) 100%)' }}
             >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                    <h2 style={{ fontSize: '1.4rem', margin: 0 }}>{targetHabit?.name || "목표 없음"}</h2>
+                    <h2 style={{ fontSize: '1.4rem', margin: 0 }}>
+                        {activeExperiment ? activeExperiment.name : (targetHabit?.name || "목표 없음")}
+                    </h2>
                     <span style={{ background: 'rgba(109, 93, 252, 0.2)', color: '#b65dfc', padding: '4px 12px', borderRadius: '12px', fontSize: '0.8rem' }}>진행 중</span>
                 </div>
-                <p style={{ marginBottom: '1.5rem' }}>목표: {targetHabit?.target}</p>
+                <p style={{ marginBottom: '1.5rem' }}>
+                    {activeExperiment ? "현재 실험 중인 대체 행동입니다" : `목표: ${targetHabit?.target || "없음"}`}
+                </p>
 
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <div
