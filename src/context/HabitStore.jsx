@@ -73,6 +73,14 @@ export const HabitProvider = ({ children }) => {
         setLogs(prev => [log, ...prev]);
     };
 
+    const updateLog = (id, newLog) => {
+        setLogs(prev => prev.map(log => log.id === id ? newLog : log));
+    };
+
+    const deleteLog = (id) => {
+        setLogs(prev => prev.filter(log => log.id !== id));
+    };
+
     const startExperiment = (experiment) => {
         setActiveExperiment({
             ...experiment,
@@ -102,7 +110,7 @@ export const HabitProvider = ({ children }) => {
         <HabitContext.Provider value={{
             userProfile, updateProfile,
             targetHabit, setHabit,
-            logs, addLog,
+            logs, addLog, updateLog, deleteLog,
             activeExperiment, startExperiment, completeExperiment, experimentHistory,
             experimentStats, incrementSuccess
         }}>

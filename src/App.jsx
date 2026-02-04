@@ -7,6 +7,7 @@ import CurrentLife from './pages/onboarding/CurrentLife';
 import Suggestion from './pages/onboarding/Suggestion';
 import Dashboard from './pages/Dashboard';
 import UrgeLogger from './pages/UrgeLogger';
+import LogHistory from './pages/LogHistory';
 import ExperimentProposal from './pages/experiment/Proposal';
 import Success from './pages/Success';
 import './index.css';
@@ -45,6 +46,7 @@ function AnimatedRoutes() {
         <Route path="/onboarding/suggestion" element={<Suggestion />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/log-urge" element={<UrgeLogger />} />
+        <Route path="/log-history" element={<LogHistory />} />
         <Route path="/experiment/proposal" element={<ExperimentProposal />} />
         <Route path="/success" element={<Success />} />
       </Routes>

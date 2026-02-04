@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useHabitStore } from '../context/HabitStore';
-import { Plus, TrendingUp, Zap, FlaskConical, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
+import { Plus, TrendingUp, Zap, FlaskConical, CheckCircle2, XCircle, RotateCcw, Edit2 } from 'lucide-react';
 
 export default function Dashboard() {
     const { targetHabit, logs, activeExperiment, completeExperiment, experimentStats, incrementSuccess } = useHabitStore();
@@ -29,8 +29,7 @@ export default function Dashboard() {
                 // We need a visual feedback for the partial success.
             }
         } else {
-            // Log failure, maybe ask if they want to try a different alternative?
-            // For now, keep trying.
+            alert("기록되었습니다. 괜찮아요, 다음엔 더 잘 맞을 수도 있어요!");
         }
     };
 
@@ -61,8 +60,13 @@ export default function Dashboard() {
                 <p style={{ marginBottom: '1.5rem' }}>목표: {targetHabit?.target}</p>
 
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.8rem', opacity: 0.6, marginBottom: '4px' }}>로그 기록</div>
+                    <div
+                        onClick={() => navigate('/log-history')}
+                        style={{ flex: 1, cursor: 'pointer' }}
+                    >
+                        <div style={{ fontSize: '0.8rem', opacity: 0.6, marginBottom: '4px', display: 'flex', alignItems: 'center' }}>
+                            로그 기록 <Edit2 size={12} style={{ marginLeft: '4px', opacity: 0.5 }} />
+                        </div>
                         <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{logCount}</div>
                     </div>
                     <div style={{ flex: 1 }}>
