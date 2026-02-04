@@ -12,7 +12,7 @@ export default function ConceptIntro() {
             nextPath="/onboarding/ideal-life"
             isNextDisabled={false}
         >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1rem', overflowY: 'auto', paddingBottom: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1rem' }}>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div style={{ background: 'rgba(255, 99, 71, 0.2)', padding: '12px', borderRadius: '50%' }}>

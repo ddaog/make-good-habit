@@ -19,7 +19,7 @@ export default function OnboardingLayout({ title, children, nextPath, onNext, is
         >
             <h1 className="text-gradient" style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>{title}</h1>
 
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', minHeight: 0, paddingBottom: '1rem' }}>
                 {children}
             </div>
 
