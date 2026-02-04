@@ -5,6 +5,39 @@ import { RefreshCw, Zap, Gift, ChevronDown, ChevronUp, Lightbulb } from 'lucide-
 
 export default function ConceptIntro() {
     const [showExample, setShowExample] = useState(false);
+    const [activeExampleIndex, setActiveExampleIndex] = useState(0);
+
+    const examples = [
+        {
+            tag: '퇴근 스트레스',
+            title: '예시: 퇴근 후 스트레스',
+            trigger: '직장에서 받은 스트레스',
+            badAction: '매운 야식 먹기',
+            reward: '스트레스 해소',
+            goodAction: '따뜻한 차 마시기',
+            result: '위장은 편안하고, 스트레스는 똑같이 풀립니다.'
+        },
+        {
+            tag: '침대 스마트폰',
+            title: '예시: 잠들기 전 스마트폰',
+            trigger: '심심함과 보상 심리',
+            badAction: 'SNS 무한 스크롤',
+            reward: '도파민 충전',
+            goodAction: '종이책 1페이지 읽기',
+            result: '블루라이트 없이 뇌가 이완되어 잠이 잘 옵니다.'
+        },
+        {
+            tag: '오후 3시 군것질',
+            title: '예시: 오후 3시 당 떨어짐',
+            trigger: '피로감과 지루함',
+            badAction: '초콜릿/과자 섭취',
+            reward: '일시적 에너지',
+            goodAction: '가벼운 스트레칭',
+            result: '혈액순환으로 진짜 에너지가 충전됩니다.'
+        }
+    ];
+
+    const activeExample = examples[activeExampleIndex];
 
     return (
         <OnboardingLayout
@@ -13,7 +46,7 @@ export default function ConceptIntro() {
             isNextDisabled={false}
         >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1rem' }}>
-
+                {/* ... existing header icons ... */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div style={{ background: 'rgba(255, 99, 71, 0.2)', padding: '12px', borderRadius: '50%' }}>
                         <Zap color="#ff6347" size={24} />
@@ -86,31 +119,49 @@ export default function ConceptIntro() {
                         >
                             <div className="glass-panel" style={{ padding: '1.2rem', background: 'rgba(20,20,25,0.8)' }}>
                                 <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', overflowX: 'auto', paddingBottom: '4px' }}>
-                                    {['퇴근 스트레스', '침대 스마트폰', '오후 3시 군것질'].map(tag => (
-                                        <span key={tag} style={{ fontSize: '0.75rem', padding: '4px 8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', whiteSpace: 'nowrap' }}>
-                                            #{tag}
-                                        </span>
+                                    {examples.map((ex, idx) => (
+                                        <button
+                                            key={ex.tag}
+                                            onClick={() => setActiveExampleIndex(idx)}
+                                            style={{
+                                                fontSize: '0.75rem',
+                                                padding: '4px 8px',
+                                                borderRadius: '4px',
+                                                background: activeExampleIndex === idx ? 'var(--color-accent)' : 'rgba(255,255,255,0.1)',
+                                                color: activeExampleIndex === idx ? 'white' : 'var(--color-text-secondary)',
+                                                whiteSpace: 'nowrap',
+                                                border: 'none',
+                                                cursor: 'pointer'
+                                            }}>
+                                            #{ex.tag}
+                                        </button>
                                     ))}
                                 </div>
 
-                                <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#ffd700' }}>예시: 퇴근 후 스트레스</h4>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 12px', fontSize: '0.9rem' }}>
-                                    <span style={{ opacity: 0.6 }}>신호:</span> <span>직장에서 받은 스트레스</span>
-                                    <span style={{ opacity: 0.6 }}>행동:</span> <span style={{ color: '#ff6b6b', textDecoration: 'line-through' }}>매운 야식 먹기</span>
-                                    <span style={{ opacity: 0.6 }}>보상:</span> <span>스트레스 해소</span>
+                                <motion.div
+                                    key={activeExample.title}
+                                    initial={{ opacity: 0, x: 10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#ffd700' }}>{activeExample.title}</h4>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 12px', fontSize: '0.9rem' }}>
+                                        <span style={{ opacity: 0.6 }}>신호:</span> <span>{activeExample.trigger}</span>
+                                        <span style={{ opacity: 0.6 }}>행동:</span> <span style={{ color: '#ff6b6b', textDecoration: 'line-through' }}>{activeExample.badAction}</span>
+                                        <span style={{ opacity: 0.6 }}>보상:</span> <span>{activeExample.reward}</span>
 
-                                    <div style={{ gridColumn: '1 / -1', height: '1px', background: 'rgba(255,255,255,0.1)', margin: '8px 0' }} />
+                                        <div style={{ gridColumn: '1 / -1', height: '1px', background: 'rgba(255,255,255,0.1)', margin: '8px 0' }} />
 
-                                    <span style={{ opacity: 0.6 }}>새 행동:</span> <span style={{ color: '#2ecc71', fontWeight: 'bold' }}>따뜻한 차 마시기</span>
-                                    <span style={{ gridColumn: '1 / -1', fontSize: '0.8rem', opacity: 0.8, marginTop: '4px' }}>
-                                        결과: 위장은 편안하고, 스트레스는 똑같이 풀립니다.
-                                    </span>
-                                </div>
+                                        <span style={{ opacity: 0.6 }}>새 행동:</span> <span style={{ color: '#2ecc71', fontWeight: 'bold' }}>{activeExample.goodAction}</span>
+                                        <span style={{ gridColumn: '1 / -1', fontSize: '0.8rem', opacity: 0.8, marginTop: '4px' }}>
+                                            결과: {activeExample.result}
+                                        </span>
+                                    </div>
+                                </motion.div>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
-
             </div>
         </OnboardingLayout>
     );
