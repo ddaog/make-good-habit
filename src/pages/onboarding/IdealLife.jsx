@@ -1,32 +1,70 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import OnboardingLayout from '../../components/OnboardingLayout';
 import { useHabitStore } from '../../context/HabitStore';
+import { Check } from 'lucide-react';
 
 export default function IdealLife() {
     const { updateProfile } = useHabitStore();
-    const [text, setText] = useState('');
+    const [selectedKeywords, setSelectedKeywords] = useState([]);
+
+    const keywords = [
+        "활기찬 아침", "깊은 몰입", "건강한 몸",
+        "여유로운 마음", "자신감", "규칙적인 생활",
+        "충분한 수면", "디지털 디톡스"
+    ];
+
+    const toggleKeyword = (keyword) => {
+        if (selectedKeywords.includes(keyword)) {
+            setSelectedKeywords(prev => prev.filter(k => k !== keyword));
+        } else {
+            if (selectedKeywords.length < 3) {
+                setSelectedKeywords(prev => [...prev, keyword]);
+            }
+        }
+    };
 
     const handleNext = () => {
-        updateProfile('idealLife', text);
+        updateProfile('idealLife', selectedKeywords.join(', '));
     };
 
     return (
         <OnboardingLayout
-            title="당신의 이상적인 삶은 어떤 모습인가요?"
+            title="어떤 삶을 원하시나요?"
             nextPath="/onboarding/current-life"
             onNext={handleNext}
-            isNextDisabled={text.length < 5}
+            isNextDisabled={selectedKeywords.length === 0}
         >
-            <p>최고의 자아를 상상해보세요. 어떤 습관을 가지고 있나요? 어떤 기분인가요?</p>
-            <textarea
-                className="input-field glass-panel"
-                rows={6}
-                placeholder="예: 상쾌하게 일어나서 매일 운동하고, 집중력을 유지하며..."
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                style={{ resize: 'none', lineHeight: '1.5' }}
-                autoFocus
-            />
+            <p style={{ marginBottom: '2rem' }}>당신을 가장 잘 설명하는 키워드를 3개까지 선택해주세요.</p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                {keywords.map(keyword => {
+                    const isSelected = selectedKeywords.includes(keyword);
+                    return (
+                        <motion.button
+                            key={keyword}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => toggleKeyword(keyword)}
+                            className="glass-panel"
+                            style={{
+                                padding: '1.2rem',
+                                border: isSelected ? '1px solid var(--color-accent)' : '1px solid rgba(255,255,255,0.1)',
+                                background: isSelected ? 'rgba(109, 93, 252, 0.2)' : 'rgba(255,255,255,0.03)',
+                                color: 'white',
+                                cursor: 'pointer',
+                                fontSize: '1rem',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                textAlign: 'left'
+                            }}
+                        >
+                            {keyword}
+                            {isSelected && <Check size={18} color="var(--color-accent)" />}
+                        </motion.button>
+                    )
+                })}
+            </div>
         </OnboardingLayout>
     );
 }
