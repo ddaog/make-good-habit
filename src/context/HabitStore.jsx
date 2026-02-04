@@ -73,6 +73,10 @@ export const HabitProvider = ({ children }) => {
         setExperimentStats(prev => ({ ...prev, failureCount: (prev.failureCount || 0) + 1 }));
     };
 
+    const resetStats = () => {
+        setExperimentStats({ successCount: 0, failureCount: 0 });
+    };
+
     const setHabit = (habit) => {
         setTargetHabit(habit);
     };
@@ -90,6 +94,7 @@ export const HabitProvider = ({ children }) => {
     };
 
     const startExperiment = (experiment) => {
+        resetStats(); // Reset success/failure counts for new experiment
         setActiveExperiment({
             ...experiment,
             startDate: new Date().toISOString(),
@@ -120,7 +125,7 @@ export const HabitProvider = ({ children }) => {
             targetHabit, setHabit,
             logs, addLog, updateLog, deleteLog,
             activeExperiment, startExperiment, completeExperiment, experimentHistory,
-            experimentStats, incrementSuccess, incrementFailure
+            experimentStats, incrementSuccess, incrementFailure, resetStats
         }}>
             {children}
         </HabitContext.Provider>

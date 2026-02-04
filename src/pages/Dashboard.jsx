@@ -212,22 +212,22 @@ export default function Dashboard() {
 
                 <button
                     className="glass-panel"
+                    onClick={() => navigate('/experiment-history')}
                     style={{
                         padding: '1.5rem',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        border: '1px solid rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
                         cursor: 'pointer',
-                        textAlign: 'center',
-                        opacity: 0.7
+                        textAlign: 'center'
                     }}
                 >
-                    <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '50%', padding: '0.8rem' }}>
-                        <TrendingUp size={24} color="white" />
+                    <div style={{ background: 'rgba(109, 93, 252, 0.2)', borderRadius: '50%', padding: '0.8rem' }}>
+                        <TrendingUp size={24} color="var(--color-accent)" />
                     </div>
-                    <span style={{ fontWeight: '500' }}>진행 상황</span>
+                    <span style={{ fontWeight: '500' }}>실험 기록</span>
                 </button>
             </div>
 
