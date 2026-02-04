@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useHabitStore } from '../context/HabitStore';
-import { Plus, TrendingUp, Zap, FlaskConical, CheckCircle2, XCircle } from 'lucide-react';
+import { Plus, TrendingUp, Zap, FlaskConical, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 
 export default function Dashboard() {
     const { targetHabit, logs, activeExperiment, completeExperiment } = useHabitStore();
@@ -116,6 +116,27 @@ export default function Dashboard() {
                 </motion.div>
             )}
 
+            {!activeExperiment && logCount < 3 && (
+                <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="glass-panel"
+                    style={{ padding: '1.5rem', marginBottom: '2rem', textAlign: 'center', opacity: 0.8 }}
+                >
+                    <div style={{ marginBottom: '1rem' }}>
+                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: 'var(--color-text-secondary)' }}>데이터 수집 중</h3>
+                        <p style={{ margin: 0, fontSize: '0.8rem', opacity: 0.6 }}>나를 더 잘 알기 위해 욕구를 기록해주세요.</p>
+                    </div>
+
+                    <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '10px', height: '8px', overflow: 'hidden', marginBottom: '0.5rem' }}>
+                        <div style={{ width: `${(logCount / 3) * 100}%`, height: '100%', background: 'var(--color-accent)', transition: 'width 0.5s ease' }} />
+                    </div>
+                    <div style={{ fontSize: '0.8rem', textAlign: 'right', color: 'var(--color-accent)' }}>
+                        {logCount} / 3 분석까지
+                    </div>
+                </motion.div>
+            )}
+
             {/* Action Area */}
             <h3 style={{ marginBottom: '1rem' }}>Actions</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -160,6 +181,30 @@ export default function Dashboard() {
                 </button>
             </div>
 
+            {/* Restart Onboarding FAB */}
+            <button
+                onClick={() => navigate('/onboarding/concept')}
+                style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: 'rgba(255,255,255,0.7)',
+                    zIndex: 100
+                }}
+                title="무엇인지 다시 보기"
+            >
+                <RotateCcw size={24} />
+            </button>
         </div>
     );
 }
