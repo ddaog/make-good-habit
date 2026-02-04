@@ -4,7 +4,7 @@ import { useHabitStore } from '../context/HabitStore';
 import { Plus, TrendingUp, Zap, FlaskConical, CheckCircle2, XCircle, RotateCcw, Edit2 } from 'lucide-react';
 
 export default function Dashboard() {
-    const { targetHabit, logs, activeExperiment, completeExperiment, experimentStats, incrementSuccess } = useHabitStore();
+    const { targetHabit, logs, activeExperiment, completeExperiment, experimentStats, incrementSuccess, incrementFailure } = useHabitStore();
     const navigate = useNavigate();
 
     const logCount = logs.length;
@@ -29,7 +29,22 @@ export default function Dashboard() {
                 // We need a visual feedback for the partial success.
             }
         } else {
-            alert("기록되었습니다. 괜찮아요, 다음엔 더 잘 맞을 수도 있어요!");
+            incrementFailure();
+            const currentFailures = (experimentStats?.failureCount || 0) + 1;
+            const currentSuccesses = experimentStats?.successCount || 0;
+            const totalAttempts = currentFailures + currentSuccesses;
+
+            // User Requirement: "5번 중 3번 이상 효과가 없을 때" (3+ failures out of 5 attempts)
+            // We check if total attempts reached 5, and failures are >= 3.
+            if (totalAttempts >= 5 && currentFailures >= 3) {
+                if (window.confirm("현재 방법은 효과가 부족한 것 같습니다. (5번 중 3번 실패)\n다른 행동을 시도해보시겠습니까?")) {
+                    // Reset stats for the next experiment? Or keep history?
+                    // For now, let's just navigate to proposal to pick a new one.
+                    navigate('/experiment/proposal');
+                }
+            } else {
+                alert("기록되었습니다. 괜찮아요, 다음엔 더 잘 맞을 수도 있어요!");
+            }
         }
     };
 

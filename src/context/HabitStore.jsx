@@ -16,7 +16,7 @@ export const HabitProvider = ({ children }) => {
 
     const [experimentStats, setExperimentStats] = useState(() => {
         const saved = localStorage.getItem('gh_stats');
-        return saved ? JSON.parse(saved) : { successCount: 0 };
+        return saved ? JSON.parse(saved) : { successCount: 0, failureCount: 0 };
     });
 
     const [logs, setLogs] = useState(() => {
@@ -62,7 +62,11 @@ export const HabitProvider = ({ children }) => {
     };
 
     const incrementSuccess = () => {
-        setExperimentStats(prev => ({ ...prev, successCount: prev.successCount + 1 }));
+        setExperimentStats(prev => ({ ...prev, successCount: (prev.successCount || 0) + 1 }));
+    };
+
+    const incrementFailure = () => {
+        setExperimentStats(prev => ({ ...prev, failureCount: (prev.failureCount || 0) + 1 }));
     };
 
     const setHabit = (habit) => {
@@ -112,7 +116,7 @@ export const HabitProvider = ({ children }) => {
             targetHabit, setHabit,
             logs, addLog, updateLog, deleteLog,
             activeExperiment, startExperiment, completeExperiment, experimentHistory,
-            experimentStats, incrementSuccess
+            experimentStats, incrementSuccess, incrementFailure
         }}>
             {children}
         </HabitContext.Provider>
