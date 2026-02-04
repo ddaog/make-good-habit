@@ -151,8 +151,11 @@ export default function Dashboard() {
                     style={{ padding: '1.5rem', marginBottom: '2rem', textAlign: 'center', opacity: 0.8 }}
                 >
                     <div style={{ marginBottom: '1rem' }}>
-                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: 'var(--color-text-secondary)' }}>데이터 수집 중</h3>
-                        <p style={{ margin: 0, fontSize: '0.8rem', opacity: 0.6 }}>나를 더 잘 알기 위해 욕구를 기록해주세요.</p>
+                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: 'var(--color-text-secondary)' }}>패턴 분석 중...</h3>
+                        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.8, lineHeight: '1.4' }}>
+                            가장 취약한 시간과 감정을 알아야 이길 수 있습니다.<br />
+                            <span style={{ color: 'var(--color-accent)' }}>3번만 솔직하게 기록해보세요.</span>
+                        </p>
                     </div>
 
                     <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '10px', height: '8px', overflow: 'hidden', marginBottom: '0.5rem' }}>

@@ -28,14 +28,21 @@ export default function UrgeLogger() {
 
     return (
         <div className="container">
-            <header style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
-                <button
-                    onClick={() => navigate(-1)}
-                    style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 0, marginRight: '1rem' }}
-                >
-                    <ArrowLeft size={24} />
-                </button>
-                <h1 style={{ fontSize: '1.5rem', margin: 0 }}>욕구 기록</h1>
+            <header style={{ marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: 0, marginRight: '1rem' }}
+                    >
+                        <ArrowLeft size={24} />
+                    </button>
+                    <h1 style={{ fontSize: '1.5rem', margin: 0 }}>욕구 관찰하기</h1>
+                </div>
+                <p style={{ opacity: 0.8, fontSize: '0.9rem', lineHeight: '1.5', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px' }}>
+                    <span style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>💡 왜 기록하나요?</span><br />
+                    습관은 무의식적인 반복입니다. 욕구가 일어나는 순간을 기록하는 것만으로도,
+                    뇌는 자동 반응을 멈추고 **선택할 수 있는 상태**가 됩니다.
+                </p>
             </header>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
