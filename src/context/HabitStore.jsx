@@ -56,6 +56,10 @@ export const HabitProvider = ({ children }) => {
         localStorage.setItem('gh_experimentHistory', JSON.stringify(experimentHistory));
     }, [experimentHistory]);
 
+    useEffect(() => {
+        localStorage.setItem('gh_stats', JSON.stringify(experimentStats));
+    }, [experimentStats]);
+
     // Actions
     const updateProfile = (key, value) => {
         setUserProfile(prev => ({ ...prev, [key]: value }));
