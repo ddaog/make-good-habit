@@ -8,19 +8,40 @@ export default function Suggestion() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
-    // Mock AI Logic to "Analyze" their input
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 2000); // Fake "thinking" time
-        return () => clearTimeout(timer);
-    }, []);
-
-    const suggestedHabit = {
-        name: "심야 스마트폰 사용",
-        target: "밤 11시 취침",
-        reason: "현재 생활 패턴을 볼 때, 이것이 에너지를 개선하는 가장 쉬운 방법입니다."
+    const suggestions = {
+        'phone': {
+            name: "스마트폰 거리두기",
+            target: "침실 밖 충전하기",
+            reason: "물리적 거리를 두는 것이 의지력보다 강력합니다."
+        },
+        'sleep': {
+            name: "수면 의식",
+            target: "11시 조명 끄기",
+            reason: "빛을 차단하여 멜라토닌 분비를 돕습니다."
+        },
+        'food': {
+            name: "식욕 서핑",
+            target: "물 한 잔 마시고 10분 대기",
+            reason: "가짜 배고픔은 15분 내에 사라집니다."
+        },
+        'smoke': {
+            name: "호흡 스위치",
+            target: "심호흡 3번 하기",
+            reason: "니코틴이 주는 이완 효과를 호흡으로 대체합니다."
+        },
+        'lazy': {
+            name: "2분 규칙",
+            target: "딱 2분만 작업하기",
+            reason: "시작의 저항을 낮추면 관성이 생깁니다."
+        },
+        'other': {
+            name: "의식적 멈춤",
+            target: "행동 전 '멈춤' 외치기",
+            reason: "무의식적인 행동 패턴을 끊어냅니다."
+        }
     };
+
+    const suggestedHabit = suggestions[userProfile.habitCategory] || suggestions['other'];
 
     const handleAccept = () => {
         setHabit(suggestedHabit);

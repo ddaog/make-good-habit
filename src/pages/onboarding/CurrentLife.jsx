@@ -20,6 +20,7 @@ export default function CurrentLife() {
     const handleNext = () => {
         const habit = habits.find(h => h.id === selectedId);
         updateProfile('currentLife', habit ? habit.label : '기타');
+        updateProfile('habitCategory', selectedId || 'other');
     };
 
     return (

@@ -5,13 +5,18 @@ const HabitContext = createContext(null);
 export const HabitProvider = ({ children }) => {
     // Load initial state from localStorage if available
     const [userProfile, setUserProfile] = useState(() => {
-        const saved = localStorage.getItem('gh_userProfile');
-        return saved ? JSON.parse(saved) : { idealLife: '', currentLife: '' };
+        const saved = localStorage.getItem('gh_profile');
+        return saved ? JSON.parse(saved) : { idealLife: [], currentLife: '', habitCategory: 'other' };
     });
 
     const [targetHabit, setTargetHabit] = useState(() => {
-        const saved = localStorage.getItem('gh_targetHabit');
+        const saved = localStorage.getItem('gh_target');
         return saved ? JSON.parse(saved) : null;
+    });
+
+    const [experimentStats, setExperimentStats] = useState(() => {
+        const saved = localStorage.getItem('gh_stats');
+        return saved ? JSON.parse(saved) : { successCount: 0 };
     });
 
     const [logs, setLogs] = useState(() => {
@@ -52,8 +57,12 @@ export const HabitProvider = ({ children }) => {
     }, [experimentHistory]);
 
     // Actions
-    const updateProfile = (field, value) => {
-        setUserProfile(prev => ({ ...prev, [field]: value }));
+    const updateProfile = (key, value) => {
+        setUserProfile(prev => ({ ...prev, [key]: value }));
+    };
+
+    const incrementSuccess = () => {
+        setExperimentStats(prev => ({ ...prev, successCount: prev.successCount + 1 }));
     };
 
     const setHabit = (habit) => {
@@ -94,7 +103,8 @@ export const HabitProvider = ({ children }) => {
             userProfile, updateProfile,
             targetHabit, setHabit,
             logs, addLog,
-            activeExperiment, startExperiment, completeExperiment, experimentHistory
+            activeExperiment, startExperiment, completeExperiment, experimentHistory,
+            experimentStats, incrementSuccess
         }}>
             {children}
         </HabitContext.Provider>

@@ -4,21 +4,33 @@ import { useHabitStore } from '../context/HabitStore';
 import { Plus, TrendingUp, Zap, FlaskConical, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 
 export default function Dashboard() {
-    const { targetHabit, logs, activeExperiment, completeExperiment } = useHabitStore();
+    const { targetHabit, logs, activeExperiment, completeExperiment, experimentStats, incrementSuccess } = useHabitStore();
     const navigate = useNavigate();
 
     const logCount = logs.length;
     // Simple "streak" logic: count logs for now, or successful conversions later
     const streak = logs.filter(l => l.actionTaken === 'good').length;
+    const successCount = experimentStats?.successCount || 0;
 
     // HEURISTIC: After 3 logs, suggest an experiment if none is active
     const showExperimentPrompt = !activeExperiment && logCount >= 3;
 
     const handleExperimentComplete = (success) => {
-        const result = completeExperiment(success);
-        // In a real app, maybe show a "Success" modal or animation here
-        if (success && result.success) {
-            navigate('/success');
+        if (success) {
+            incrementSuccess();
+            // If they reached 3 successes, then it's a "Real Success"
+            if (successCount + 1 >= 3) {
+                const result = completeExperiment(true);
+                navigate('/success');
+            } else {
+                // Just log the success and keep experimenting
+                // Ideally we should log a "success" event here without closing the experiment, 
+                // but for this prototype, we'll keep the experiment active until 3 hits.
+                // We need a visual feedback for the partial success.
+            }
+        } else {
+            // Log failure, maybe ask if they want to try a different alternative?
+            // For now, keep trying.
         }
     };
 
@@ -79,6 +91,17 @@ export default function Dashboard() {
                         <FlaskConical size={20} color="var(--color-accent)" />
                         <h3 style={{ margin: 0, fontSize: '1.1rem' }}>테스트: {activeExperiment.name}</h3>
                     </div>
+
+                    <div style={{ marginBottom: '1rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', marginBottom: '0.3rem', opacity: 0.8 }}>
+                            <span>성공 횟수</span>
+                            <span>{successCount} / 3</span>
+                        </div>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '10px', height: '8px', overflow: 'hidden' }}>
+                            <div style={{ width: `${(successCount / 3) * 100}%`, height: '100%', background: '#2ecc71', transition: 'width 0.3s ease' }} />
+                        </div>
+                    </div>
+
                     <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem' }}>다음에 욕구를 느낄 때 이 행동을 시도해보세요. 효과가 있었나요?</p>
 
                     <div style={{ display: 'flex', gap: '1rem' }}>

@@ -85,6 +85,14 @@ export default function ConceptIntro() {
                             style={{ overflow: 'hidden' }}
                         >
                             <div className="glass-panel" style={{ padding: '1.2rem', background: 'rgba(20,20,25,0.8)' }}>
+                                <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', overflowX: 'auto', paddingBottom: '4px' }}>
+                                    {['퇴근 스트레스', '침대 스마트폰', '오후 3시 군것질'].map(tag => (
+                                        <span key={tag} style={{ fontSize: '0.75rem', padding: '4px 8px', borderRadius: '4px', background: 'rgba(255,255,255,0.1)', whiteSpace: 'nowrap' }}>
+                                            #{tag}
+                                        </span>
+                                    ))}
+                                </div>
+
                                 <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#ffd700' }}>예시: 퇴근 후 스트레스</h4>
                                 <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 12px', fontSize: '0.9rem' }}>
                                     <span style={{ opacity: 0.6 }}>신호:</span> <span>직장에서 받은 스트레스</span>
