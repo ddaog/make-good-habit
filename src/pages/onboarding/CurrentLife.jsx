@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import OnboardingLayout from '../../components/OnboardingLayout';
 import { useHabitStore } from '../../context/HabitStore';
-import { Smartphone, Moon, Utensils, Cigarette, Gamepad2, AlertCircle } from 'lucide-react';
+import { Smartphone, Moon, Utensils, Cigarette, Gamepad2, AlertCircle, Edit3 } from 'lucide-react';
 
 export default function CurrentLife() {
     const { updateProfile } = useHabitStore();
     const [selectedId, setSelectedId] = useState(null);
+    const [customHabit, setCustomHabit] = useState('');
 
     const habits = [
         { id: 'phone', label: '심야 스마트폰', icon: <Smartphone size={24} /> },
@@ -19,20 +20,23 @@ export default function CurrentLife() {
 
     const handleNext = () => {
         const habit = habits.find(h => h.id === selectedId);
-        updateProfile('currentLife', habit ? habit.label : '기타');
+        const finalLabel = selectedId === 'other' ? customHabit : (habit ? habit.label : '기타');
+        updateProfile('currentLife', finalLabel);
         updateProfile('habitCategory', selectedId || 'other');
     };
+
+    const isNextDisabled = !selectedId || (selectedId === 'other' && !customHabit.trim());
 
     return (
         <OnboardingLayout
             title="가장 바꾸고 싶은 것은?"
             nextPath="/onboarding/suggestion"
             onNext={handleNext}
-            isNextDisabled={!selectedId}
+            isNextDisabled={isNextDisabled}
         >
             <p style={{ marginBottom: '2rem' }}>당신의 에너지를 가장 많이 뺏어가는 습관 하나를 골라주세요.</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '1.5rem' }}>
                 {habits.map((item) => {
                     const isSelected = selectedId === item.id;
                     return (
@@ -61,6 +65,30 @@ export default function CurrentLife() {
                     );
                 })}
             </div>
+
+            <AnimatePresence>
+                {selectedId === 'other' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        style={{ marginBottom: '1.5rem' }}
+                    >
+                        <div style={{ position: 'relative' }}>
+                            <Edit3 size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
+                            <input
+                                type="text"
+                                className="input-field"
+                                placeholder="어떤 습관인가요? 직접 입력해주세요"
+                                value={customHabit}
+                                onChange={(e) => setCustomHabit(e.target.value)}
+                                style={{ paddingLeft: '40px' }}
+                                autoFocus
+                            />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </OnboardingLayout>
     );
 }

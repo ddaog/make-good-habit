@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useHabitStore } from '../../context/HabitStore';
+import { Sparkles, ArrowRight, Target, FlaskConical } from 'lucide-react';
 
 export default function Suggestion() {
     const { userProfile, setHabit } = useHabitStore();
@@ -60,12 +61,14 @@ export default function Suggestion() {
         return (
             <div className="container" style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                    animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
                     transition={{ repeat: Infinity, duration: 2 }}
-                    className="text-gradient"
-                    style={{ fontSize: '1.5rem', fontWeight: 'bold' }}
+                    style={{ textAlign: 'center' }}
                 >
-                    당신의 삶을 분석하는 중...
+                    <Sparkles size={48} color="var(--color-accent)" style={{ marginBottom: '1rem' }} />
+                    <div className="text-gradient" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+                        당신의 삶을 분석하는 중...
+                    </div>
                 </motion.div>
             </div>
         );
@@ -73,22 +76,52 @@ export default function Suggestion() {
 
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             className="container"
             style={{ justifyContent: 'center' }}
         >
-            <h2 className="text-gradient">시작점을 찾았습니다</h2>
-            <p style={{ marginBottom: '2rem' }}>이상적인 삶에 도달하기 위해, 작게 시작해봅시다.</p>
-
-            <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2rem' }}>
-                <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem' }}>{suggestedHabit.name}</h3>
-                <p style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>목표: {suggestedHabit.target}</p>
-                <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>{suggestedHabit.reason}</p>
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <div style={{ display: 'inline-flex', padding: '12px', background: 'rgba(109, 93, 252, 0.1)', borderRadius: '50%', marginBottom: '1rem' }}>
+                    <Sparkles size={32} color="var(--color-accent)" />
+                </div>
+                <h2 className="text-gradient" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>실험 가이드: 새로운 행동 시도하기</h2>
+                <p style={{ fontSize: '0.95rem' }}>분석 결과, 당신의 첫 번째 실험 목표를 정했습니다.</p>
             </div>
 
-            <button className="btn-primary" onClick={handleAccept} style={{ width: '100%' }}>
-                첫 실험 선택하러 가기
+            <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2.5rem', border: '1px solid var(--color-accent)', background: 'rgba(109, 93, 252, 0.03)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', opacity: 0.8 }}>
+                    <Target size={16} color="var(--color-accent)" />
+                    <span style={{ fontSize: '0.8rem', fontWeight: 'bold', textTransform: 'uppercase' }}>추천 목표</span>
+                </div>
+                <h3 style={{ margin: '0 0 0.8rem 0', fontSize: '1.5rem' }}>{suggestedHabit.name}</h3>
+                <p style={{ color: 'var(--color-accent)', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '1rem' }}>{suggestedHabit.target}</p>
+                <p style={{ fontSize: '0.9rem', opacity: 0.8, margin: 0, lineHeight: '1.5' }}>{suggestedHabit.reason}</p>
+            </div>
+
+            <div style={{ marginBottom: '2.5rem' }}>
+                <h4 style={{ fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <FlaskConical size={18} color="var(--color-accent)" />
+                    실험은 이렇게 진행됩니다
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <div className="badge">1</div>
+                        <p style={{ margin: 0, fontSize: '0.9rem' }}>기존 습관의 <strong>신호(Trigger)</strong>가 올 때까지 기다립니다.</p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <div className="badge">2</div>
+                        <p style={{ margin: 0, fontSize: '0.9rem' }}>기존 습관 대신, <strong>선택한 새로운 행동</strong>을 시도합니다.</p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <div className="badge">3</div>
+                        <p style={{ margin: 0, fontSize: '0.9rem' }}>시도 후 <strong>효과가 있었는지</strong> 정직하게 평가합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button className="btn-primary" onClick={handleAccept} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                첫 실험 선택하러 가기 <ArrowRight size={18} />
             </button>
         </motion.div>
     );
