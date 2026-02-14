@@ -2,22 +2,18 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useHabitStore } from '../../context/HabitStore';
-import { Sparkles, ArrowRight, Target, FlaskConical } from 'lucide-react';
+import { Sparkles, ArrowRight, Target, FlaskConical, AlertCircle } from 'lucide-react';
+import { generateHabitSuggestion } from '../../services/aiService';
 
 export default function Suggestion() {
     const { userProfile, setHabit } = useHabitStore();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [suggestedHabit, setSuggestedHabit] = useState(null);
+    const [error, setError] = useState(null);
 
-    // Mock AI Logic to "Analyze" their input
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 2000); // Fake "thinking" time
-        return () => clearTimeout(timer);
-    }, []);
-
-    const suggestions = {
+    // Default fallbacks in case AI fails
+    const fallbacks = {
         'phone': {
             name: "스마트폰 거리두기",
             target: "침실 밖 충전하기",
@@ -50,7 +46,22 @@ export default function Suggestion() {
         }
     };
 
-    const suggestedHabit = suggestions[userProfile.habitCategory] || suggestions['other'];
+    useEffect(() => {
+        async function fetchSuggestion() {
+            setLoading(true);
+            try {
+                const aiSuggestion = await generateHabitSuggestion(userProfile);
+                setSuggestedHabit(aiSuggestion);
+            } catch (err) {
+                console.error('AI Suggestion Failed:', err);
+                setError(err.message === 'API_KEY_MISSING' ? 'KEY_MISSING' : 'FAILED');
+                setSuggestedHabit(fallbacks[userProfile.habitCategory] || fallbacks['other']);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchSuggestion();
+    }, [userProfile]);
 
     const handleAccept = () => {
         setHabit(suggestedHabit);
@@ -88,6 +99,26 @@ export default function Suggestion() {
                 <h2 className="text-gradient" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>실험 가이드: 새로운 행동 시도하기</h2>
                 <p style={{ fontSize: '0.95rem' }}>분석 결과, 당신의 첫 번째 실험 목표를 정했습니다.</p>
             </div>
+
+            {error && (
+                <div style={{
+                    padding: '10px',
+                    background: 'rgba(231, 76, 60, 0.1)',
+                    border: '1px solid rgba(231, 76, 60, 0.3)',
+                    borderRadius: '8px',
+                    marginBottom: '1.5rem',
+                    fontSize: '0.8rem',
+                    color: '#e74c3c',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                }}>
+                    <AlertCircle size={14} />
+                    {error === 'KEY_MISSING'
+                        ? 'API 키가 설정되지 않아 기본 추천을 표시합니다.'
+                        : '연결 문제로 인해 기본 추천을 표시합니다.'}
+                </div>
+            )}
 
             <div className="glass-panel" style={{ padding: '2rem', marginBottom: '2.5rem', border: '1px solid var(--color-accent)', background: 'rgba(109, 93, 252, 0.03)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', opacity: 0.8 }}>
